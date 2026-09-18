@@ -1,0 +1,58 @@
+[gd_scene format=3 uid="uid://ch7tgoig8yude"]
+
+[ext_resource type="Script" uid="uid://y8rr517w3cso" path="res://paddle.gd" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
+
+[node name="Game" type="Node2D" unique_id=4718652]
+
+[node name="Wall" type="StaticBody2D" parent="." unique_id=170934965]
+position = Vector2(565, 53)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=1830701376]
+scale = Vector2(23, 1)
+shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="Polygon2D" type="Polygon2D" parent="Wall" unique_id=2030201720]
+polygon = PackedVector2Array(230, 10, -230, 10, -230, -10, 230, -10)
+
+[node name="Wall2" type="StaticBody2D" parent="." unique_id=255566024]
+position = Vector2(345, 313)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2" unique_id=1037088006]
+scale = Vector2(1, 25)
+shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="Polygon2D" type="Polygon2D" parent="Wall2" unique_id=841968467]
+polygon = PackedVector2Array(10, 250, -10, 250, -10, -250, 10, -250)
+
+[node name="Wall3" type="StaticBody2D" parent="." unique_id=830243572]
+position = Vector2(785, 313)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall3" unique_id=1857958001]
+scale = Vector2(1, 25)
+shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="Polygon2D" type="Polygon2D" parent="Wall3" unique_id=515964945]
+polygon = PackedVector2Array(10, 250, -10, 250, -10, -250, 10, -250)
+
+[node name="Paddle" type="CharacterBody2D" parent="." unique_id=517106290]
+position = Vector2(569, 564)
+script = ExtResource("1_ig7tw")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paddle" unique_id=1184553890]
+polygon = PackedVector2Array(50, 5, 50, -5, -50, -5, -50, 5)
+
+[node name="Polygon2D" type="Polygon2D" parent="Paddle" unique_id=1195686633]
+polygon = PackedVector2Array(50, 5, 50, -5, -50, -5, -50, 5)
+
+[node name="Ball" type="CharacterBody2D" parent="." unique_id=76248758]
+position = Vector2(570, 521)
+script = ExtResource("2_0xm2m")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Ball" unique_id=988709632]
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="Polygon2D" type="Polygon2D" parent="Ball" unique_id=718086381]
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
