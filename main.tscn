@@ -1,72 +1,86 @@
 [gd_scene format=3 uid="uid://ch7tgoig8yude"]
 
+[ext_resource type="Texture2D" uid="uid://dajlutojkciny" path="res://assets/backgrounds/fantasy_background.png" id="1_1bvp3"]
 [ext_resource type="Script" uid="uid://y8rr517w3cso" path="res://paddle.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://e1mp7psevxjx" path="res://brick.gd" id="3_h2yge"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
+size = Vector2(16, 504)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dxf86"]
+size = Vector2(432, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2golg"]
+size = Vector2(80, 24)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2qwpt"]
+size = Vector2(96, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1nhn"]
+size = Vector2(16, 16)
 
 [node name="Game" type="Node2D" unique_id=4718652]
 
-[node name="Wall" type="StaticBody2D" parent="." unique_id=170934965]
-position = Vector2(565, 53)
+[node name="Background" type="Sprite2D" parent="." unique_id=1721310100]
+z_index = -10
+position = Vector2(576, 324)
+scale = Vector2(0.69, 0.69)
+texture = ExtResource("1_1bvp3")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall" unique_id=1830701376]
-scale = Vector2(23, 1)
+[node name="VerticalWall1" type="StaticBody2D" parent="." unique_id=255566024]
+position = Vector2(368, 328)
+
+[node name="Polygon2D" type="Polygon2D" parent="VerticalWall1" unique_id=841968467]
+polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VerticalWall1" unique_id=1037088006]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="Polygon2D" type="Polygon2D" parent="Wall" unique_id=2030201720]
-polygon = PackedVector2Array(230, 10, -230, 10, -230, -10, 230, -10)
+[node name="VerticalWall2" type="StaticBody2D" parent="." unique_id=830243572]
+position = Vector2(784, 328)
 
-[node name="Wall2" type="StaticBody2D" parent="." unique_id=255566024]
-position = Vector2(345, 313)
+[node name="Polygon2D" type="Polygon2D" parent="VerticalWall2" unique_id=515964945]
+polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall2" unique_id=1037088006]
-scale = Vector2(1, 25)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VerticalWall2" unique_id=1857958001]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="Polygon2D" type="Polygon2D" parent="Wall2" unique_id=841968467]
-polygon = PackedVector2Array(10, 250, -10, 250, -10, -250, 10, -250)
+[node name="HorizontalWall" type="StaticBody2D" parent="." unique_id=57328203]
+position = Vector2(576, 68)
 
-[node name="Wall3" type="StaticBody2D" parent="." unique_id=830243572]
-position = Vector2(785, 313)
+[node name="Polygon2D" type="Polygon2D" parent="HorizontalWall" unique_id=63314238]
+polygon = PackedVector2Array(216, 8, -216, 8, -216, -8, 216, -8)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall3" unique_id=1857958001]
-scale = Vector2(1, 25)
-shape = SubResource("RectangleShape2D_7dm0k")
-
-[node name="Polygon2D" type="Polygon2D" parent="Wall3" unique_id=515964945]
-polygon = PackedVector2Array(10, 250, -10, 250, -10, -250, 10, -250)
-
-[node name="Paddle" type="CharacterBody2D" parent="." unique_id=517106290]
-position = Vector2(569, 564)
-script = ExtResource("1_ig7tw")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Paddle" unique_id=1184553890]
-polygon = PackedVector2Array(50, 5, 50, -5, -50, -5, -50, 5)
-
-[node name="Polygon2D" type="Polygon2D" parent="Paddle" unique_id=1195686633]
-polygon = PackedVector2Array(50, 5, 50, -5, -50, -5, -50, 5)
-
-[node name="Ball" type="CharacterBody2D" parent="." unique_id=76248758]
-position = Vector2(570, 521)
-script = ExtResource("2_0xm2m")
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Ball" unique_id=988709632]
-polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
-
-[node name="Polygon2D" type="Polygon2D" parent="Ball" unique_id=718086381]
-polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HorizontalWall" unique_id=465597918]
+shape = SubResource("RectangleShape2D_dxf86")
 
 [node name="Brick" type="StaticBody2D" parent="." unique_id=122034715]
-position = Vector2(566, 127)
+position = Vector2(576, 145)
 script = ExtResource("3_h2yge")
 
 [node name="Polygon2D" type="Polygon2D" parent="Brick" unique_id=372326501]
-polygon = PackedVector2Array(-40, -7, 40, -7, 40, 7, -40, 7)
+polygon = PackedVector2Array(-40, -12, 40, -12, 40, 12, -40, 12)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Brick" unique_id=1820624083]
-scale = Vector2(4, 0.7)
 shape = SubResource("RectangleShape2D_2golg")
+
+[node name="Paddle" type="CharacterBody2D" parent="." unique_id=517106290]
+position = Vector2(576, 580)
+script = ExtResource("1_ig7tw")
+
+[node name="Polygon2D" type="Polygon2D" parent="Paddle" unique_id=1195686633]
+polygon = PackedVector2Array(48, 8, 48, -8, -48, -8, -48, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle" unique_id=1091716783]
+shape = SubResource("RectangleShape2D_2qwpt")
+
+[node name="Ball" type="CharacterBody2D" parent="." unique_id=76248758]
+position = Vector2(576, 531)
+script = ExtResource("2_0xm2m")
+
+[node name="Polygon2D" type="Polygon2D" parent="Ball" unique_id=718086381]
+polygon = PackedVector2Array(8, 8, 8, -8, -8, -8, -8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=484008785]
+shape = SubResource("RectangleShape2D_d1nhn")
