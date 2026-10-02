@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" uid="uid://y8rr517w3cso" path="res://paddle.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://e1mp7psevxjx" path="res://brick.gd" id="3_h2yge"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2golg"]
 
 [node name="Game" type="Node2D" unique_id=4718652]
 
@@ -56,3 +59,14 @@ polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
 
 [node name="Polygon2D" type="Polygon2D" parent="Ball" unique_id=718086381]
 polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="Brick" type="StaticBody2D" parent="." unique_id=122034715]
+position = Vector2(566, 127)
+script = ExtResource("3_h2yge")
+
+[node name="Polygon2D" type="Polygon2D" parent="Brick" unique_id=372326501]
+polygon = PackedVector2Array(-40, -7, 40, -7, 40, 7, -40, 7)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Brick" unique_id=1820624083]
+scale = Vector2(4, 0.7)
+shape = SubResource("RectangleShape2D_2golg")

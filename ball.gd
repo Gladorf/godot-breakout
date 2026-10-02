@@ -7,3 +7,6 @@ func _physics_process(delta):
 	var collision = move_and_collide(velocity*delta)
 	if collision:
 		velocity = velocity.bounce(collision.get_normal())
+		var collider = collision.get_collider()
+		if collider.has_method("destroy"):
+			collider.destroy()
