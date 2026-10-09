@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://y8rr517w3cso" path="res://paddle.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://e1mp7psevxjx" path="res://brick.gd" id="3_h2yge"]
+[ext_resource type="Texture2D" uid="uid://dbyj3f1ut82s" path="res://assets/sprites/Cosmic Arcane Orb Sprite.png" id="5_lquwl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
 size = Vector2(16, 504)
@@ -17,8 +18,8 @@ size = Vector2(80, 24)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2qwpt"]
 size = Vector2(96, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d1nhn"]
-size = Vector2(16, 16)
+[sub_resource type="CircleShape2D" id="CircleShape2D_lquwl"]
+radius = 8.0
 
 [node name="Game" type="Node2D" unique_id=4718652]
 
@@ -79,8 +80,9 @@ shape = SubResource("RectangleShape2D_2qwpt")
 position = Vector2(576, 531)
 script = ExtResource("2_0xm2m")
 
-[node name="Polygon2D" type="Polygon2D" parent="Ball" unique_id=718086381]
-polygon = PackedVector2Array(8, 8, 8, -8, -8, -8, -8, 8)
+[node name="Sprite2D" type="Sprite2D" parent="Ball" unique_id=848806390]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_lquwl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=484008785]
-shape = SubResource("RectangleShape2D_d1nhn")
+shape = SubResource("CircleShape2D_lquwl")
