@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://ch7tgoig8yude"]
 
 [ext_resource type="Texture2D" uid="uid://dajlutojkciny" path="res://assets/backgrounds/fantasy_background.png" id="1_1bvp3"]
+[ext_resource type="Script" uid="uid://dl5qqtcroct4y" path="res://game.gd" id="1_7mycd"]
 [ext_resource type="Script" uid="uid://y8rr517w3cso" path="res://paddle.gd" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
-[ext_resource type="Script" uid="uid://e1mp7psevxjx" path="res://brick.gd" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://dbyj3f1ut82s" path="res://assets/sprites/Cosmic Arcane Orb Sprite.png" id="5_lquwl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
@@ -12,9 +12,6 @@ size = Vector2(16, 504)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dxf86"]
 size = Vector2(432, 16)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2golg"]
-size = Vector2(80, 24)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2qwpt"]
 size = Vector2(96, 16)
 
@@ -22,6 +19,7 @@ size = Vector2(96, 16)
 radius = 8.0
 
 [node name="Game" type="Node2D" unique_id=4718652]
+script = ExtResource("1_7mycd")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1721310100]
 z_index = -10
@@ -56,15 +54,8 @@ polygon = PackedVector2Array(216, 8, -216, 8, -216, -8, 216, -8)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HorizontalWall" unique_id=465597918]
 shape = SubResource("RectangleShape2D_dxf86")
 
-[node name="Brick" type="StaticBody2D" parent="." unique_id=122034715]
-position = Vector2(576, 145)
-script = ExtResource("3_h2yge")
-
-[node name="Polygon2D" type="Polygon2D" parent="Brick" unique_id=372326501]
-polygon = PackedVector2Array(-40, -12, 40, -12, 40, 12, -40, 12)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Brick" unique_id=1820624083]
-shape = SubResource("RectangleShape2D_2golg")
+[node name="BricksContainer" type="Node2D" parent="." unique_id=189597307]
+position = Vector2(376, 76)
 
 [node name="Paddle" type="CharacterBody2D" parent="." unique_id=517106290]
 position = Vector2(576, 580)

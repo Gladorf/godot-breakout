@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://b3it6hym2fapy"]
+
+[ext_resource type="Script" uid="uid://e1mp7psevxjx" path="res://brick.gd" id="1_awxk8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2golg"]
+size = Vector2(72, 24)
+
+[node name="Brick" type="StaticBody2D" unique_id=1572356868]
+script = ExtResource("1_awxk8")
+
+[node name="Polygon2D" type="Polygon2D" parent="." unique_id=2059114671]
+polygon = PackedVector2Array(-36, -12, 36, -12, 36, 12, -36, 12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=807775037]
+shape = SubResource("RectangleShape2D_2golg")
