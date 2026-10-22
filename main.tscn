@@ -19,61 +19,80 @@ size = Vector2(96, 16)
 radius = 8.0
 
 [node name="Game" type="Node2D" unique_id=4718652]
+process_mode = 3
 script = ExtResource("1_7mycd")
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1721310100]
+[node name="Gameplay" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="Background" type="Sprite2D" parent="Gameplay" unique_id=1721310100]
 z_index = -10
 position = Vector2(576, 324)
 scale = Vector2(0.69, 0.69)
 texture = ExtResource("1_1bvp3")
 
-[node name="VerticalWall1" type="StaticBody2D" parent="." unique_id=255566024]
+[node name="VerticalWall1" type="StaticBody2D" parent="Gameplay" unique_id=255566024]
 position = Vector2(368, 328)
 
-[node name="Polygon2D" type="Polygon2D" parent="VerticalWall1" unique_id=841968467]
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/VerticalWall1" unique_id=841968467]
 polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VerticalWall1" unique_id=1037088006]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall1" unique_id=1037088006]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="VerticalWall2" type="StaticBody2D" parent="." unique_id=830243572]
+[node name="VerticalWall2" type="StaticBody2D" parent="Gameplay" unique_id=830243572]
 position = Vector2(784, 328)
 
-[node name="Polygon2D" type="Polygon2D" parent="VerticalWall2" unique_id=515964945]
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/VerticalWall2" unique_id=515964945]
 polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="VerticalWall2" unique_id=1857958001]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall2" unique_id=1857958001]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="HorizontalWall" type="StaticBody2D" parent="." unique_id=57328203]
+[node name="HorizontalWall" type="StaticBody2D" parent="Gameplay" unique_id=57328203]
 position = Vector2(576, 68)
 
-[node name="Polygon2D" type="Polygon2D" parent="HorizontalWall" unique_id=63314238]
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/HorizontalWall" unique_id=63314238]
 polygon = PackedVector2Array(216, 8, -216, 8, -216, -8, 216, -8)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HorizontalWall" unique_id=465597918]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/HorizontalWall" unique_id=465597918]
 shape = SubResource("RectangleShape2D_dxf86")
 
-[node name="BricksContainer" type="Node2D" parent="." unique_id=189597307]
+[node name="BricksContainer" type="Node2D" parent="Gameplay" unique_id=189597307]
 position = Vector2(376, 76)
 
-[node name="Paddle" type="CharacterBody2D" parent="." unique_id=517106290]
+[node name="Paddle" type="CharacterBody2D" parent="Gameplay" unique_id=517106290]
 position = Vector2(576, 580)
 script = ExtResource("1_ig7tw")
 
-[node name="Polygon2D" type="Polygon2D" parent="Paddle" unique_id=1195686633]
+[node name="Polygon2D" type="Polygon2D" parent="Gameplay/Paddle" unique_id=1195686633]
 polygon = PackedVector2Array(48, 8, 48, -8, -48, -8, -48, 8)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle" unique_id=1091716783]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/Paddle" unique_id=1091716783]
 shape = SubResource("RectangleShape2D_2qwpt")
 
-[node name="Ball" type="CharacterBody2D" parent="." unique_id=76248758]
+[node name="ActivePlay" type="Node2D" parent="Gameplay"]
+process_mode = 4
+
+[node name="Ball" type="CharacterBody2D" parent="Gameplay/ActivePlay" unique_id=76248758]
 position = Vector2(576, 531)
 script = ExtResource("2_0xm2m")
 
-[node name="Sprite2D" type="Sprite2D" parent="Ball" unique_id=848806390]
+[node name="Sprite2D" type="Sprite2D" parent="Gameplay/ActivePlay/Ball" unique_id=848806390]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_lquwl")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ball" unique_id=484008785]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/ActivePlay/Ball" unique_id=484008785]
 shape = SubResource("CircleShape2D_lquwl")
+
+[node name="Overlay" type="CanvasLayer" parent="."]
+
+[node name="StateMessage" type="Label" parent="Overlay"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+horizontal_alignment = 1
+vertical_alignment = 1

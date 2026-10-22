@@ -2,8 +2,15 @@ extends CharacterBody2D
 
 var SPEED = 300
 
-func _ready():
-	velocity = Vector2(randf_range(-1,1),-1).normalized() * SPEED
+
+func prepare_for_launch() -> void:
+	# Keep the acquired speed when reusing the ball after a lost attempt.
+	if not velocity.is_zero_approx():
+		SPEED = velocity.length()
+	velocity = Vector2.ZERO
+
+func launch() -> void:
+	velocity = Vector2(randf_range(-1, 1), -1).normalized() * SPEED
 
 func _physics_process(delta):
 	var collision = move_and_collide(velocity*delta)

@@ -6,7 +6,18 @@ const margin_y = 8
 const space_x = 8
 const space_y = 8
 
-@onready var bricks_container: Node2D = $BricksContainer
+enum State { WAITING, PLAYING, PAUSED, FINISHED }
+
+@onready var bricks_container: Node2D = $Gameplay/BricksContainer
+# Future objects and gameplay timers belong under ActivePlay and inherit its process mode.
+@onready var active_play: Node2D = $Gameplay/ActivePlay
+@onready var paddle = $Gameplay/Paddle
+@onready var ball = $Gameplay/ActivePlay/Ball
+@onready var state_message: Label = $Overlay/StateMessage
+
+var state: State = State.WAITING
+var state_before_pause: State = State.WAITING
+var lives_remaining: int = 3
 
 var brick_size: Vector2
 var start_position: Vector2
@@ -22,6 +33,73 @@ func _ready() -> void:
 
 	spawn_row()
 	spawn_row()
+	spawn_row()
+	spawn_row()
+
+	paddle.moved.connect(_on_paddle_moved)
+	_wait_for_launch()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		if state == State.PAUSED:
+			state = state_before_pause
+			get_tree().paused = false
+			_update_message()
+		elif state != State.FINISHED:
+			state_before_pause = state
+			state = State.PAUSED
+			get_tree().paused = true
+			_update_message()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("launch") and state == State.WAITING:
+		_place_ball_on_paddle()
+		state = State.PLAYING
+		active_play.process_mode = Node.PROCESS_MODE_INHERIT
+		ball.launch()
+		_update_message()
+		get_viewport().set_input_as_handled()
+
+func _physics_process(_delta: float) -> void:
+	if state != State.PLAYING:
+		return
+	var radius: float = ball.get_node("CollisionShape2D").shape.radius
+	var ball_top: float = ball.get_global_transform_with_canvas().origin.y - radius
+	if ball_top > get_viewport_rect().end.y:
+		lives_remaining -= 1
+		if lives_remaining > 0:
+			_wait_for_launch()
+		else:
+			state = State.FINISHED
+			active_play.process_mode = Node.PROCESS_MODE_DISABLED
+			$Gameplay.process_mode = Node.PROCESS_MODE_DISABLED
+			_update_message()
+
+func _wait_for_launch() -> void:
+	state = State.WAITING
+	active_play.process_mode = Node.PROCESS_MODE_DISABLED
+	ball.prepare_for_launch()
+	_place_ball_on_paddle()
+	_update_message()
+
+func _on_paddle_moved() -> void:
+	if state == State.WAITING:
+		_place_ball_on_paddle()
+
+func _place_ball_on_paddle() -> void:
+	var paddle_half_height: float = paddle.get_node("CollisionShape2D").shape.size.y / 2.0
+	var ball_radius: float = ball.get_node("CollisionShape2D").shape.radius
+	ball.global_position = paddle.global_position - Vector2(0, paddle_half_height + ball_radius)
+
+func _update_message() -> void:
+	match state:
+		State.WAITING:
+			state_message.text = "press space bar to start"
+		State.PAUSED:
+			state_message.text = "Paused — press Esc to resume"
+		State.FINISHED:
+			state_message.text = "Game Over"
+		_:
+			state_message.text = ""
 
 func spawn_row() -> void:
 	for brick in bricks_container.get_children():

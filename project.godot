@@ -33,6 +33,15 @@ move_right={
 ]
 }
 
+launch={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":32)]
+}
+pause={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":4194305)]
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
