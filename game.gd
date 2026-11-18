@@ -1,6 +1,7 @@
 extends Node2D
 
 const BRICK_SCENE = preload("res://brick.tscn")
+const POINTS_PER_BRICK: int = 100
 const margin_x = 4
 const margin_y = 8
 const space_x = 8
@@ -14,10 +15,14 @@ enum State { WAITING, PLAYING, PAUSED, FINISHED }
 @onready var paddle = $Gameplay/Paddle
 @onready var ball = $Gameplay/ActivePlay/Ball
 @onready var state_message: Label = $Overlay/StateMessage
+@onready var life_orbs: HBoxContainer = $Overlay/HUD/LifeOrbs
+@onready var score_value: Label = $Overlay/HUD/Score/Value
+@onready var best_score_value: Label = $Overlay/HUD/BestScore/Value
 
 var state: State = State.WAITING
 var state_before_pause: State = State.WAITING
 var lives_remaining: int = 3
+var score: int = 0
 
 var brick_size: Vector2
 var start_position: Vector2
@@ -38,6 +43,7 @@ func _ready() -> void:
 
 	paddle.moved.connect(_on_paddle_moved)
 	_wait_for_launch()
+	_update_hud()
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -66,6 +72,7 @@ func _physics_process(_delta: float) -> void:
 	var ball_top: float = ball.get_global_transform_with_canvas().origin.y - radius
 	if ball_top > get_viewport_rect().end.y:
 		lives_remaining -= 1
+		_update_hud()
 		if lives_remaining > 0:
 			_wait_for_launch()
 		else:
@@ -101,6 +108,17 @@ func _update_message() -> void:
 		_:
 			state_message.text = ""
 
+func _on_brick_destroyed() -> void:
+	score += POINTS_PER_BRICK
+	SessionScore.best_score = maxi(SessionScore.best_score, score)
+	_update_hud()
+
+func _update_hud() -> void:
+	for i in range(life_orbs.get_child_count()):
+		life_orbs.get_child(i).visible = i < lives_remaining
+	score_value.text = str(score)
+	best_score_value.text = str(SessionScore.best_score)
+
 func spawn_row() -> void:
 	for brick in bricks_container.get_children():
 		brick.position.y += brick_size.y + space_y
@@ -110,4 +128,5 @@ func spawn_row() -> void:
 		brick.position = start_position + Vector2(
 			i * (brick_size.x + space_x), 0
 		)
+		brick.destroyed.connect(_on_brick_destroyed)
 		bricks_container.add_child(brick)

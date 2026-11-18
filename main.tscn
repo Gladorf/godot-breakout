@@ -87,6 +87,96 @@ shape = SubResource("CircleShape2D_lquwl")
 
 [node name="Overlay" type="CanvasLayer" parent="."]
 
+[node name="HUD" type="HBoxContainer" parent="Overlay"]
+offset_left = 360.0
+offset_top = 12.0
+offset_right = 792.0
+offset_bottom = 52.0
+mouse_filter = 2
+theme_override_constants/separation = 8
+
+[node name="LivesLabel" type="Label" parent="Overlay/HUD"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_font_sizes/font_size = 16
+text = "Lives"
+
+[node name="LifeOrbs" type="HBoxContainer" parent="Overlay/HUD"]
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="Life1" type="TextureRect" parent="Overlay/HUD/LifeOrbs"]
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_lquwl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Life2" type="TextureRect" parent="Overlay/HUD/LifeOrbs"]
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_lquwl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Life3" type="TextureRect" parent="Overlay/HUD/LifeOrbs"]
+texture_filter = 1
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("5_lquwl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Spacer" type="Control" parent="Overlay/HUD"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+
+[node name="Score" type="VBoxContainer" parent="Overlay/HUD"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Overlay/HUD/Score"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "score"
+horizontal_alignment = 2
+
+[node name="Value" type="Label" parent="Overlay/HUD/Score"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "0"
+horizontal_alignment = 2
+
+[node name="BestScore" type="VBoxContainer" parent="Overlay/HUD"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Title" type="Label" parent="Overlay/HUD/BestScore"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "best score"
+horizontal_alignment = 2
+
+[node name="Value" type="Label" parent="Overlay/HUD/BestScore"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "0"
+horizontal_alignment = 2
+
 [node name="StateMessage" type="Label" parent="Overlay"]
 anchors_preset = 15
 anchor_right = 1.0
