@@ -13,12 +13,17 @@ enum State { WAITING, PLAYING, PAUSED, FINISHED }
 @onready var bricks_container: Node2D = $Gameplay/BricksContainer
 # Future objects and gameplay timers belong under ActivePlay and inherit its process mode.
 @onready var active_play: Node2D = $Gameplay/ActivePlay
+@onready var falling_objects: Node2D = $Gameplay/ActivePlay/FallingObjects
 @onready var paddle = $Gameplay/Paddle
 @onready var ball = $Gameplay/ActivePlay/Ball
 @onready var state_message: Label = $Overlay/StateMessage
 @onready var life_orbs: HBoxContainer = $Overlay/HUD/LifeOrbs
 @onready var score_value: Label = $Overlay/HUD/Score/Value
 @onready var best_score_value: Label = $Overlay/HUD/BestScore/Value
+@onready var end_screen: CenterContainer = $Overlay/EndScreen
+@onready var end_message: Label = $Overlay/EndScreen/Panel/Content/Message
+@onready var final_score: Label = $Overlay/EndScreen/Panel/Content/FinalScore
+@onready var replay_button: Button = $Overlay/EndScreen/Panel/Content/Replay
 
 var state: State = State.WAITING
 var state_before_pause: State = State.WAITING
@@ -27,6 +32,7 @@ var score: int = 0
 
 var brick_size: Vector2
 var start_position: Vector2
+var brick_limit_y: float
 
 func _ready() -> void:
 	var brick = BRICK_SCENE.instantiate()
@@ -36,6 +42,12 @@ func _ready() -> void:
 	brick_size = shape.size
 	start_position = Vector2(margin_x, margin_y) + brick_size / 2
 	brick.free()
+
+	var paddle_half_height: float = paddle.get_node("CollisionShape2D").shape.size.y / 2.0
+	brick_limit_y = paddle.global_position.y - paddle_half_height - 3 * (brick_size.y + space_y)
+	for wall in [$Gameplay/VerticalWall1, $Gameplay/VerticalWall2]:
+		wall.get_node("LimitMark").global_position.y = brick_limit_y
+	replay_button.pressed.connect(_on_replay_pressed)
 
 	spawn_row()
 	spawn_row()
@@ -69,6 +81,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 func _physics_process(_delta: float) -> void:
 	if state != State.PLAYING:
 		return
+	_check_end_conditions()
+	if state == State.FINISHED:
+		return
 	var radius: float = ball.get_node("CollisionShape2D").shape.radius
 	var ball_top: float = ball.get_global_transform_with_canvas().origin.y - radius
 	if ball_top > get_viewport_rect().end.y:
@@ -77,10 +92,39 @@ func _physics_process(_delta: float) -> void:
 		if lives_remaining > 0:
 			_wait_for_launch()
 		else:
-			state = State.FINISHED
-			active_play.process_mode = Node.PROCESS_MODE_DISABLED
-			$Gameplay.process_mode = Node.PROCESS_MODE_DISABLED
-			_update_message()
+			_finish_game("Game Over")
+
+func _check_end_conditions() -> void:
+	var has_bricks := false
+	for brick in bricks_container.get_children():
+		# queue_free() takes effect at the end of the frame.
+		if brick.is_queued_for_deletion():
+			continue
+		has_bricks = true
+		if brick.global_position.y + brick_size.y / 2.0 >= brick_limit_y:
+			_finish_game("Game Over")
+			return
+	if has_bricks:
+		return
+	for falling_object in falling_objects.get_children():
+		if not falling_object.is_queued_for_deletion():
+			return
+	_finish_game("Level cleared")
+
+func _finish_game(message: String) -> void:
+	if state == State.FINISHED:
+		return
+	state = State.FINISHED
+	active_play.process_mode = Node.PROCESS_MODE_DISABLED
+	$Gameplay.process_mode = Node.PROCESS_MODE_DISABLED
+	_update_message()
+	end_message.text = message
+	final_score.text = "Score final : %d" % score
+	end_screen.show()
+	replay_button.grab_focus()
+
+func _on_replay_pressed() -> void:
+	get_tree().reload_current_scene()
 
 func _wait_for_launch() -> void:
 	state = State.WAITING
@@ -105,7 +149,7 @@ func _update_message() -> void:
 		State.PAUSED:
 			state_message.text = "Paused — press Esc to resume"
 		State.FINISHED:
-			state_message.text = "Game Over"
+			state_message.text = ""
 		_:
 			state_message.text = ""
 
@@ -115,11 +159,15 @@ func _on_brick_destroyed(at_position: Vector2) -> void:
 	_update_hud()
 	var falling_object = FALLING_OBJECT_SCENE.instantiate()
 	falling_object.collected.connect(_on_object_collected)
-	active_play.add_child(falling_object)
+	falling_objects.add_child(falling_object)
 	falling_object.global_position = at_position
 
 func _on_object_collected() -> void:
+	if state != State.PLAYING:
+		return
 	ball.accelerate()
+	spawn_row()
+	_check_end_conditions()
 
 func _update_hud() -> void:
 	for i in range(life_orbs.get_child_count()):

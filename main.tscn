@@ -40,6 +40,10 @@ polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall1" unique_id=1037088006]
 shape = SubResource("RectangleShape2D_7dm0k")
 
+[node name="LimitMark" type="Polygon2D" parent="Gameplay/VerticalWall1"]
+color = Color(1, 0.5, 0.15, 1)
+polygon = PackedVector2Array(-8, -2, 8, -2, 8, 2, -8, 2)
+
 [node name="VerticalWall2" type="StaticBody2D" parent="Gameplay" unique_id=830243572]
 position = Vector2(784, 328)
 
@@ -48,6 +52,10 @@ polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall2" unique_id=1857958001]
 shape = SubResource("RectangleShape2D_7dm0k")
+
+[node name="LimitMark" type="Polygon2D" parent="Gameplay/VerticalWall2"]
+color = Color(1, 0.5, 0.15, 1)
+polygon = PackedVector2Array(-8, -2, 8, -2, 8, 2, -8, 2)
 
 [node name="HorizontalWall" type="StaticBody2D" parent="Gameplay" unique_id=57328203]
 position = Vector2(576, 68)
@@ -73,6 +81,8 @@ shape = SubResource("RectangleShape2D_2qwpt")
 
 [node name="ActivePlay" type="Node2D" parent="Gameplay"]
 process_mode = 4
+
+[node name="FallingObjects" type="Node2D" parent="Gameplay/ActivePlay"]
 
 [node name="Ball" type="CharacterBody2D" parent="Gameplay/ActivePlay" unique_id=76248758]
 position = Vector2(576, 531)
@@ -186,3 +196,38 @@ grow_vertical = 2
 mouse_filter = 2
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="EndScreen" type="CenterContainer" parent="Overlay"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Panel" type="PanelContainer" parent="Overlay/EndScreen"]
+custom_minimum_size = Vector2(280, 180)
+layout_mode = 2
+
+[node name="Content" type="VBoxContainer" parent="Overlay/EndScreen/Panel"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="Message" type="Label" parent="Overlay/EndScreen/Panel/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Game Over"
+horizontal_alignment = 1
+
+[node name="FinalScore" type="Label" parent="Overlay/EndScreen/Panel/Content"]
+layout_mode = 2
+text = "Score final : 0"
+horizontal_alignment = 1
+
+[node name="Replay" type="Button" parent="Overlay/EndScreen/Panel/Content"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Rejouer"
