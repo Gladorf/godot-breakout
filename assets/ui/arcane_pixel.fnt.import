@@ -1,0 +1,17 @@
+[remap]
+
+importer="font_data_bmfont"
+type="FontFile"
+uid="uid://rkb80qtgwuw5"
+path="res://.godot/imported/arcane_pixel.fnt-056d1ad79dadafb3a1eadb6fa5920101.fontdata"
+
+[deps]
+
+source_file="res://assets/ui/arcane_pixel.fnt"
+dest_files=["res://.godot/imported/arcane_pixel.fnt-056d1ad79dadafb3a1eadb6fa5920101.fontdata"]
+
+[params]
+
+fallbacks=[]
+compress=true
+scaling_mode=2

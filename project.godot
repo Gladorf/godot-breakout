@@ -24,6 +24,10 @@ SessionScore="*res://session_score.gd"
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[gui]
+
+theme/custom = "res://assets/ui/arcane_theme.tres"
+
 [input]
 
 move_left={

@@ -45,6 +45,7 @@ func _ready() -> void:
 
 	var paddle_half_height: float = paddle.get_node("CollisionShape2D").shape.size.y / 2.0
 	brick_limit_y = paddle.global_position.y - paddle_half_height - 3 * (brick_size.y + space_y)
+	# The engraved stone tiles follow the gameplay limit without changing collisions.
 	for wall in [$Gameplay/VerticalWall1, $Gameplay/VerticalWall2]:
 		wall.get_node("LimitMark").global_position.y = brick_limit_y
 	replay_button.pressed.connect(_on_replay_pressed)
@@ -157,6 +158,7 @@ func _on_brick_destroyed(at_position: Vector2) -> void:
 	score += POINTS_PER_BRICK
 	SessionScore.best_score = maxi(SessionScore.best_score, score)
 	_update_hud()
+	_show_score_popup(at_position)
 	var falling_object = FALLING_OBJECT_SCENE.instantiate()
 	falling_object.collected.connect(_on_object_collected)
 	falling_objects.add_child(falling_object)
@@ -186,3 +188,20 @@ func spawn_row() -> void:
 		)
 		brick.destroyed.connect(_on_brick_destroyed)
 		bricks_container.add_child(brick)
+
+func _show_score_popup(at_position: Vector2) -> void:
+	# Separate from bricks/objects: cosmetic nodes must not affect end conditions.
+	var popup := Label.new()
+	popup.text = str(POINTS_PER_BRICK)
+	popup.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	popup.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	popup.add_theme_color_override("font_color", Color("ffe4a0"))
+	$ScorePopups.add_child(popup)
+	popup.reset_size()
+	popup.global_position = (at_position - popup.size / 2.0).round()
+	# Bound to the label: pauses with the game and is discarded on replay.
+	var tween := popup.create_tween().set_parallel(true)
+	tween.tween_property(popup, "position:y", popup.position.y - 28.0, 0.75)\
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(popup, "modulate:a", 0.0, 0.3).set_delay(0.45)
+	tween.chain().tween_callback(popup.queue_free)

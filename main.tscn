@@ -6,6 +6,12 @@
 [ext_resource type="Script" uid="uid://bqb5tut0ngoia" path="res://ball.gd" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://dbyj3f1ut82s" path="res://assets/sprites/Cosmic Arcane Orb Sprite.png" id="5_lquwl"]
 
+[ext_resource type="Texture2D" path="res://assets/sprites/wall_left.svg" id="visual_wall_left"]
+[ext_resource type="Texture2D" path="res://assets/sprites/wall_right.svg" id="visual_wall_right"]
+[ext_resource type="Texture2D" path="res://assets/sprites/wall_horizontal.svg" id="visual_wall_horizontal"]
+[ext_resource type="Texture2D" path="res://assets/sprites/limit_stone.svg" id="visual_limit"]
+[ext_resource type="Texture2D" path="res://assets/sprites/arcane_paddle.svg" id="visual_paddle"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7dm0k"]
 size = Vector2(16, 504)
 
@@ -20,6 +26,7 @@ radius = 8.0
 
 [node name="Game" type="Node2D" unique_id=4718652]
 process_mode = 3
+texture_filter = 1
 script = ExtResource("1_7mycd")
 
 [node name="Gameplay" type="Node2D" parent="."]
@@ -34,34 +41,32 @@ texture = ExtResource("1_1bvp3")
 [node name="VerticalWall1" type="StaticBody2D" parent="Gameplay" unique_id=255566024]
 position = Vector2(368, 328)
 
-[node name="Polygon2D" type="Polygon2D" parent="Gameplay/VerticalWall1" unique_id=841968467]
-polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
+[node name="Sprite2D" type="Sprite2D" parent="Gameplay/VerticalWall1"]
+texture = ExtResource("visual_wall_left")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall1" unique_id=1037088006]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="LimitMark" type="Polygon2D" parent="Gameplay/VerticalWall1"]
-color = Color(1, 0.5, 0.15, 1)
-polygon = PackedVector2Array(-8, -2, 8, -2, 8, 2, -8, 2)
+[node name="LimitMark" type="Sprite2D" parent="Gameplay/VerticalWall1"]
+texture = ExtResource("visual_limit")
 
 [node name="VerticalWall2" type="StaticBody2D" parent="Gameplay" unique_id=830243572]
 position = Vector2(784, 328)
 
-[node name="Polygon2D" type="Polygon2D" parent="Gameplay/VerticalWall2" unique_id=515964945]
-polygon = PackedVector2Array(8, 252, -8, 252, -8, -252, 8, -252)
+[node name="Sprite2D" type="Sprite2D" parent="Gameplay/VerticalWall2"]
+texture = ExtResource("visual_wall_right")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/VerticalWall2" unique_id=1857958001]
 shape = SubResource("RectangleShape2D_7dm0k")
 
-[node name="LimitMark" type="Polygon2D" parent="Gameplay/VerticalWall2"]
-color = Color(1, 0.5, 0.15, 1)
-polygon = PackedVector2Array(-8, -2, 8, -2, 8, 2, -8, 2)
+[node name="LimitMark" type="Sprite2D" parent="Gameplay/VerticalWall2"]
+texture = ExtResource("visual_limit")
 
 [node name="HorizontalWall" type="StaticBody2D" parent="Gameplay" unique_id=57328203]
 position = Vector2(576, 68)
 
-[node name="Polygon2D" type="Polygon2D" parent="Gameplay/HorizontalWall" unique_id=63314238]
-polygon = PackedVector2Array(216, 8, -216, 8, -216, -8, 216, -8)
+[node name="Sprite2D" type="Sprite2D" parent="Gameplay/HorizontalWall"]
+texture = ExtResource("visual_wall_horizontal")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/HorizontalWall" unique_id=465597918]
 shape = SubResource("RectangleShape2D_dxf86")
@@ -73,8 +78,8 @@ position = Vector2(376, 76)
 position = Vector2(576, 580)
 script = ExtResource("1_ig7tw")
 
-[node name="Polygon2D" type="Polygon2D" parent="Gameplay/Paddle" unique_id=1195686633]
-polygon = PackedVector2Array(48, 8, 48, -8, -48, -8, -48, 8)
+[node name="Sprite2D" type="Sprite2D" parent="Gameplay/Paddle"]
+texture = ExtResource("visual_paddle")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/Paddle" unique_id=1091716783]
 shape = SubResource("RectangleShape2D_2qwpt")
@@ -95,6 +100,10 @@ texture = ExtResource("5_lquwl")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gameplay/ActivePlay/Ball" unique_id=484008785]
 shape = SubResource("CircleShape2D_lquwl")
 
+[node name="ScorePopups" type="Node2D" parent="."]
+process_mode = 1
+z_index = 5
+
 [node name="Overlay" type="CanvasLayer" parent="."]
 
 [node name="HUD" type="HBoxContainer" parent="Overlay"]
@@ -112,6 +121,7 @@ theme_override_constants/shadow_offset_x = 1
 theme_override_constants/shadow_offset_y = 1
 theme_override_font_sizes/font_size = 16
 text = "Lives"
+vertical_alignment = 1
 
 [node name="LifeOrbs" type="HBoxContainer" parent="Overlay/HUD"]
 layout_mode = 2
@@ -159,8 +169,8 @@ theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="Overlay/HUD/Score"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "score"
+theme_override_font_sizes/font_size = 16
+text = "Score"
 horizontal_alignment = 2
 
 [node name="Value" type="Label" parent="Overlay/HUD/Score"]
@@ -177,8 +187,8 @@ theme_override_constants/separation = 0
 
 [node name="Title" type="Label" parent="Overlay/HUD/BestScore"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "best score"
+theme_override_font_sizes/font_size = 16
+text = "Best Score"
 horizontal_alignment = 2
 
 [node name="Value" type="Label" parent="Overlay/HUD/BestScore"]
@@ -207,7 +217,7 @@ grow_vertical = 2
 mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="Overlay/EndScreen"]
-custom_minimum_size = Vector2(280, 180)
+custom_minimum_size = Vector2(400, 200)
 layout_mode = 2
 
 [node name="Content" type="VBoxContainer" parent="Overlay/EndScreen/Panel"]
@@ -217,7 +227,7 @@ theme_override_constants/separation = 16
 
 [node name="Message" type="Label" parent="Overlay/EndScreen/Panel/Content"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 32
 text = "Game Over"
 horizontal_alignment = 1
 
