@@ -61,7 +61,7 @@ shape = SubResource("RectangleShape2D_dxf86")
 [node name="BricksContainer" type="Node2D" parent="Gameplay" unique_id=189597307]
 position = Vector2(376, 76)
 
-[node name="Paddle" type="CharacterBody2D" parent="Gameplay" unique_id=517106290]
+[node name="Paddle" type="CharacterBody2D" parent="Gameplay" unique_id=517106290 groups=["paddle"]]
 position = Vector2(576, 580)
 script = ExtResource("1_ig7tw")
 

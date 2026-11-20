@@ -1,6 +1,7 @@
 extends Node2D
 
 const BRICK_SCENE = preload("res://brick.tscn")
+const FALLING_OBJECT_SCENE = preload("res://falling_object.tscn")
 const POINTS_PER_BRICK: int = 100
 const margin_x = 4
 const margin_y = 8
@@ -108,10 +109,17 @@ func _update_message() -> void:
 		_:
 			state_message.text = ""
 
-func _on_brick_destroyed() -> void:
+func _on_brick_destroyed(at_position: Vector2) -> void:
 	score += POINTS_PER_BRICK
 	SessionScore.best_score = maxi(SessionScore.best_score, score)
 	_update_hud()
+	var falling_object = FALLING_OBJECT_SCENE.instantiate()
+	falling_object.collected.connect(_on_object_collected)
+	active_play.add_child(falling_object)
+	falling_object.global_position = at_position
+
+func _on_object_collected() -> void:
+	ball.accelerate()
 
 func _update_hud() -> void:
 	for i in range(life_orbs.get_child_count()):

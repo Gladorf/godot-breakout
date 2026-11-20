@@ -1,13 +1,20 @@
 extends CharacterBody2D
 
-var SPEED = 300
+const INITIAL_SPEED: float = 300.0
+const MAX_SPEED: float = INITIAL_SPEED * 2.0
+const PICKUP_SPEED_MULTIPLIER: float = 1.05
+
+var SPEED: float = INITIAL_SPEED
 
 
 func prepare_for_launch() -> void:
 	# Keep the acquired speed when reusing the ball after a lost attempt.
-	if not velocity.is_zero_approx():
-		SPEED = velocity.length()
 	velocity = Vector2.ZERO
+
+func accelerate() -> void:
+	SPEED = minf(SPEED * PICKUP_SPEED_MULTIPLIER, MAX_SPEED)
+	if not velocity.is_zero_approx():
+		velocity = velocity.normalized() * SPEED
 
 func launch() -> void:
 	velocity = Vector2(randf_range(-1, 1), -1).normalized() * SPEED

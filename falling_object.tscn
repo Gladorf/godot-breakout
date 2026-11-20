@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://falling_object.gd" id="1_object"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_object"]
+size = Vector2(16, 16)
+
+[node name="FallingObject" type="Area2D"]
+collision_layer = 0
+collision_mask = 1
+monitorable = false
+script = ExtResource("1_object")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(1, 0.45, 0.1, 1)
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_object")
